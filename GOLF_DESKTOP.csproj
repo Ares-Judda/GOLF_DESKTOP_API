@@ -51,4 +51,9 @@
     <Resource Include="Resources\Images\SalesIcon.png" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Protobuf Include="Services\auth.proto" GrpcServices="Client" />
+		<Protobuf Include="Services\user.proto" GrpcServices="Client" />
+	</ItemGroup>
+
 </Project>
