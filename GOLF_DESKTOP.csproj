@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\ClotheIcon.png" />
+    <None Remove="Resources\Images\GOLFIcon.png" />
+    <None Remove="Resources\Images\HomeIcon.png" />
+    <None Remove="Resources\Images\InventoryIcon.png" />
+    <None Remove="Resources\Images\LogoutIcon.png" />
+    <None Remove="Resources\Images\MenuIcon.png" />
+    <None Remove="Resources\Images\PasswordIcon.png" />
+    <None Remove="Resources\Images\Return.png" />
+    <None Remove="Resources\Images\SalesIcon.png" />
+    <None Remove="Resources\Images\ShopingCarIcon.png" />
+    <None Remove="Resources\Images\UserIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\ClotheIcon.png" />
+    <Resource Include="Resources\Images\HomeIcon.png" />
+    <Resource Include="Resources\Images\InventoryIcon.png" />
+    <Resource Include="Resources\Images\LogoutIcon.png" />
+    <Resource Include="Resources\Images\MenuIcon.png" />
+    <Resource Include="Resources\Images\Return.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.29.0" />
+    <PackageReference Include="Grpc.Core.Api" Version="2.67.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.68.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="log4net" Version="3.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\GOLFIcon.png" />
+    <Resource Include="Resources\Images\PasswordIcon.png" />
+    <Resource Include="Resources\Images\ShopingCarIcon.png" />
+    <Resource Include="Resources\Images\UserIcon.png" />
+    <Resource Include="Resources\Images\SalesIcon.png" />
+  </ItemGroup>
+
+</Project>

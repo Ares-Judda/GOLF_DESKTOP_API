@@ -1,0 +1,144 @@
+﻿<Page x:Class="GOLF_DESKTOP.Views.Pages.ClothesDetails"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GOLF_DESKTOP.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ClothesDetails">
+
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+ Source="/Resources/Styles/Styles.xaml"/>
+                <ResourceDictionary 
+ Source="/Resources/Styles/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Viewbox Stretch="Fill">
+        <Grid Height="450" Width="800">
+
+            <Grid.Background>
+                <SolidColorBrush Color="#FFF7E0"/>
+            </Grid.Background>
+
+            <Rectangle Margin="34,92,26,10">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#FDCD4B"/>
+                </Rectangle.Fill>
+                <Rectangle.RadiusX>20</Rectangle.RadiusX>
+                <Rectangle.RadiusY>20</Rectangle.RadiusY>
+            </Rectangle>
+
+            <Label 
+        Content="Detalles del articulo"
+        FontFamily="Rockwell Extra Bold"
+        FontSize="30" 
+        Margin="34,39,318,363"
+        Foreground="Black" 
+        FontWeight="Bold"/>
+
+            <Label 
+        Content="Nombre:"
+        FontFamily="Bahnschrift"
+        FontSize="25" 
+        Margin="263,107,400,303"
+        Foreground="Black" 
+        FontWeight="Bold"/>
+            <TextBox 
+         x:Name="txtNombres"
+         FontFamily="Segoe UI"
+         FontSize="20"
+         Margin="263,147,318,263"
+         Padding="5"/>
+
+            <Label 
+        Content="Precio:"
+        FontFamily="Bahnschrift"
+        FontSize="25" 
+        Margin="263,198,400,212"
+        Foreground="Black" 
+        FontWeight="Bold"/>
+            <TextBox 
+         x:Name="txtApellidos"
+         FontFamily="Segoe UI"
+         FontSize="20"
+         Margin="266,236,314,174"
+         Padding="5"/>
+
+            <Label 
+        Content="Tipo de articulo:"
+        FontFamily="Bahnschrift"
+        FontSize="25" 
+        Margin="552,107,68,303"
+        Foreground="Black" 
+        FontWeight="Bold"/>
+            <ComboBox 
+         x:Name="cbxTipoCuenta"
+         FontFamily="Segoe UI"
+         FontSize="20"
+         Margin="560,140,56,270"
+         Padding="5">
+                <ComboBoxItem Content="Sudaderas"/>
+                <ComboBoxItem Content="Pantalones"/>
+            </ComboBox>
+
+            <Label 
+        Content="Talla:"
+        FontFamily="Bahnschrift"
+        FontSize="25" 
+        Margin="560,198,14,212"
+        Foreground="Black" 
+        FontWeight="Bold"/>
+            <TextBox 
+         x:Name="txtCorreo"
+         FontFamily="Segoe UI"
+         FontSize="20"
+         Margin="560,236,56,174"
+         Padding="5"/>
+
+            <Label 
+        Content="Cantidad:"
+        FontFamily="Bahnschrift"
+        FontSize="25" 
+        Margin="266,289,308,121"
+        Foreground="Black" 
+        FontWeight="Bold"/>
+            <TextBox 
+         x:Name="txtDireccion"
+         FontFamily="Segoe UI"
+         FontSize="20"
+         Margin="266,329,308,81"
+         Padding="5"/>
+
+            <Image x:Name="ClotheImage"
+            Width="184" 
+            Height="182"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Source="/Resources/Images/ClotheIcon.png"
+            Margin="53,175,0,0" 
+     />
+
+            <Image Source="/Resources/Images/Return.png"
+               Margin="8,10,758,411" 
+               RenderTransformOrigin="-0.777,-2.037"
+               MouseDown="ClickReturnToHomePage"
+        />
+
+            <Button x:Name="btnAddToTheCar"
+             Content="Agregar al carrito"
+             Style="{StaticResource GreenButtonStyle}"
+             Margin="542,370,58,30"
+             IsEnabled="False"
+             Click="ClickAddToTheCar"
+             Cursor="Hand"
+     />
+        </Grid>
+    </Viewbox>
+</Page>

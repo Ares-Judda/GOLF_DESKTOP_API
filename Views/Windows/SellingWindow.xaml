@@ -1,0 +1,244 @@
+﻿<Window x:Class="GOLF_DESKTOP.Views.Windows.SellingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GOLF_DESKTOP.Views.Windows"
+        mc:Ignorable="d"
+        Title="SellingWindow"         Height="650" 
+        Width="1000"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None"
+        Background="Transparent" 
+        AllowsTransparency="False"
+        ResizeMode="NoResize" 
+        WindowState="Normal">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                Source="/Resources/Styles/Styles.xaml"/>
+                <ResourceDictionary 
+                Source="/Resources/Styles/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border CornerRadius="8" Background="#FFF7E0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border CornerRadius="8 0 0 8" 
+                    Background="#FDB905">
+                <Grid x:Name="grdMenu" Width="50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Background="#00823E">
+                        <Image Source="/Resources/Images/GOLFIcon.png" Width="40" Margin="10"/>
+                        <Label Content="GOLF" Foreground="White"  FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="14 0 0 0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="btnMenu" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Margin="0 0 15 0">
+                        <Image Source="/Resources/Images/MenuIcon.png" Width="25" Margin="5"/>
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard x:Name="stbShowMenu">
+                                        <DoubleAnimation Storyboard.TargetName="grdMenu" Storyboard.TargetProperty="Width" From="60" To="200" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard x:Name="stbHideMenu">
+                                        <DoubleAnimation Storyboard.TargetName="grdMenu" Storyboard.TargetProperty="Width" From="200" To="60" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+
+                    <StackPanel Grid.Row="3">
+                        <!-- Opción de Inicio -->
+                        <RadioButton x:Name="rbtHome" Margin="0 5 0 5" Click="ClickHome" Background="Transparent">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#26BB6D"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <Border Background="#00823E" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,5" Width="200">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="/Resources/Images/HomeIcon.png" Width="30" Height="30" Margin="5"/>
+                                    <TextBlock Text="Inicio" Foreground="White" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </RadioButton>
+
+                        <!-- Opción de Perfil -->
+                        <RadioButton x:Name="rbtProfile" Margin="0 5 0 5" Click="ClickProfile" Background="Transparent">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#26BB6D"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <Border Background="#00823E" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,5" Width="200">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="/Resources/Images/UserIcon.png" Width="30" Height="30" Margin="5"/>
+                                    <TextBlock Text="Perfil" Foreground="White" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </RadioButton>
+
+                        
+                        <RadioButton x:Name="rbtSales" Margin="0 5 0 5" Click="ClickSales" Background="Transparent">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#26BB6D"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <Border Background="#00823E" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,5" Width="200">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="/Resources/Images/SalesIcon.png" Width="30" Height="30" Margin="5"/>
+                                    <TextBlock Text="Ventas" Foreground="White" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </RadioButton>
+
+                        <StackPanel x:Name="SalesOptions" Margin="20, 0, 0, 0" Visibility="Collapsed">
+                            <RadioButton x:Name="rbtSell" Margin="0 5 0 5" Click="ClickSell">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Background="#00823E" Width="200">
+                                    <TextBlock Text="Vender" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="rbtModify" Margin="0 5 0 5" Click="ClickModify">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Background="#00823E" Width="200">
+                                    <TextBlock Text="Modificar" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="rbtEarnings" Margin="0 5 0 5" Click="ClickEarnings">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Background="#00823E" Width="200">
+                                    <TextBlock Text="Ganancias" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+
+                        <!-- Opción de Inventario -->
+                        <RadioButton x:Name="rbtInventory" Margin="0 5 0 5" Click="ClickInventory" Background="Transparent">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#26BB6D"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <Border Background="#00823E" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,5" Width="200">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="/Resources/Images/InventoryIcon.png" Width="30" Height="30" Margin="5"/>
+                                    <TextBlock Text="Inventario" Foreground="White" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </RadioButton>
+
+                    </StackPanel>
+
+                    <StackPanel 
+                            Grid.Row="3" 
+                            VerticalAlignment="Bottom" 
+                            Orientation="Horizontal" 
+                            Margin="0 0 0 20">
+                                                <Image 
+                                Width="40" 
+                                Height="40" 
+                                Margin="10 0 0 0"
+                                Source="/Resources/Images/LogoutIcon.png"
+                                MouseDown="MouseDownLogout"
+                                Cursor="Hand"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid 
+    Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition 
+            Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel   
+        Grid.Row="0"   
+        Grid.Column="4"   
+        HorizontalAlignment="Right"  
+        VerticalAlignment="Top"  
+        Margin="0,5,10,0"  
+        Height="30"   
+        Orientation="Horizontal"   
+        FlowDirection="RightToLeft">
+                    <Button  
+            x:Name="btnClose"  
+            Style="{StaticResource IconButtonsStyle}"   
+            Content="{DynamicResource Close}"   
+            Tag="IsCloseButton"
+            Click="ClickClose"/>
+                    <Button   
+            x:Name="btnRestore" 
+            Margin="5,0" 
+            Click="ClickRestore">
+                        <Button.Style>
+                            <Style  
+                    TargetType="{x:Type Button}"  
+                    BasedOn="{StaticResource IconButtonsStyle}">
+                                <Setter  
+                        Property="Content"  
+                        Value="{DynamicResource Maximize}"/>
+                                <Style.Triggers>
+                                    <DataTrigger 
+                            Binding="{Binding ElementName=home, Path=WindowState}"   
+                            Value="Maximized">
+                                        <Setter 
+                                Property="Content" 
+                                Value="{DynamicResource Restore}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button  
+            x:Name="btnMinimize"  
+            Style="{DynamicResource IconButtonsStyle}" 
+            Content="{DynamicResource Minimize}"
+            Click="ClickMinimize"/>
+                </StackPanel>
+
+                <Border 
+    Grid.Row="1" 
+    Margin="10">
+                    <Frame  
+        x:Name="fraPages" 
+        NavigationUIVisibility="Hidden">
+                    </Frame>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

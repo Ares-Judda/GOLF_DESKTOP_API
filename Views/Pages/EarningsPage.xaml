@@ -1,0 +1,70 @@
+﻿<Page x:Class="GOLF_DESKTOP.Views.Pages.EarningsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GOLF_DESKTOP.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EarningsPage">
+
+   <Viewbox Stretch = "Fill">
+    <Grid Height="450"
+   Width="800">
+
+        <Grid.Background>
+            <SolidColorBrush Color="#FFF7E0"/>
+        </Grid.Background>
+
+            <Rectangle Margin="30,161,30,20">
+
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#FDCD4B"/>
+                </Rectangle.Fill>
+
+                <Rectangle.RadiusX>20</Rectangle.RadiusX>
+                <Rectangle.RadiusY>20</Rectangle.RadiusY>
+
+            </Rectangle>
+            <DatePicker 
+                x:Name="dpInicio"
+                Text="Fecha de inicio"
+                FontFamily="Segoe UI"
+                FontSize="20"
+                Margin="342,63,160,347"/>
+
+            <DatePicker 
+                x:Name="dpCorte"
+                Text="Fecha de inicio"
+                FontFamily="Segoe UI"
+                FontSize="20"
+                Margin="342,115,160,295"/>
+
+            <Label 
+                Content = "Ganacias"
+                FontFamily = "Rockwell Extra Bold"
+                FontSize = "30" 
+                Margin = "34,15,558,387"
+                Foreground = "Black" 
+                FontWeight="Bold"
+                />
+
+            <Label 
+                Content = "Fecha de inicio:"
+                FontFamily = "Rockwell Extra Bold"
+                FontSize = "30" 
+                Margin = "34,58,473,344"
+                Foreground = "Black" 
+                FontWeight="Bold"
+                />
+            <Label 
+                Content = "Fecha de corte:"
+                FontFamily = "Rockwell Extra Bold"
+                FontSize = "30" 
+                Margin = "34,111,473,291"
+                Foreground = "Black" 
+                FontWeight="Bold"
+                />
+        </Grid>
+</Viewbox>
+</Page>

@@ -1,0 +1,139 @@
+﻿<Page x:Class="GOLF_DESKTOP.Views.Pages.SellClothesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GOLF_DESKTOP.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SellClothesPage">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+     Source="/Resources/Styles/Styles.xaml"/>
+                <ResourceDictionary 
+     Source="/Resources/Styles/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Viewbox Stretch="Fill">
+        <Grid Height="450" Width="800">
+
+            <Grid.Background>
+                <SolidColorBrush Color="#FFF7E0"/>
+            </Grid.Background>
+
+            <Rectangle Margin="34,124,26,30">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#FDCD4B"/>
+                </Rectangle.Fill>
+                <Rectangle.RadiusX>20</Rectangle.RadiusX>
+                <Rectangle.RadiusY>20</Rectangle.RadiusY>
+            </Rectangle>
+
+            <Label 
+            Content="Vende tu articulo"
+            FontFamily="Rockwell Extra Bold"
+            FontSize="30" 
+            Margin="34,71,400,331"
+            Foreground="Black" 
+            FontWeight="Bold"/>
+
+            <Label 
+            Content="Nombre:"
+            FontFamily="Bahnschrift"
+            FontSize="25" 
+            Margin="263,134,400,276"
+            Foreground="Black" 
+            FontWeight="Bold"/>
+            <TextBox 
+             x:Name="txtNombres"
+             FontFamily="Segoe UI"
+             FontSize="20"
+             Margin="263,174,318,236"
+             Padding="5"/>
+
+            <Label 
+            Content="Precio:"
+            FontFamily="Bahnschrift"
+            FontSize="25" 
+            Margin="263,222,400,188"
+            Foreground="Black" 
+            FontWeight="Bold"/>
+            <TextBox 
+             x:Name="txtApellidos"
+             FontFamily="Segoe UI"
+             FontSize="20"
+             Margin="263,267,318,143"
+             Padding="5"/>
+
+            <Label 
+            Content="Tipo de articulo:"
+            FontFamily="Bahnschrift"
+            FontSize="25" 
+            Margin="560,134,60,276"
+            Foreground="Black" 
+            FontWeight="Bold"/>
+            <ComboBox 
+             x:Name="cbxTipoCuenta"
+             FontFamily="Segoe UI"
+             FontSize="20"
+             Margin="560,174,56,236"
+             Padding="5">
+                <ComboBoxItem Content="Sudaderas"/>
+                <ComboBoxItem Content="Pantalones"/>
+            </ComboBox>
+
+            <Label 
+            Content="Talla:"
+            FontFamily="Bahnschrift"
+            FontSize="25" 
+            Margin="560,222,14,188"
+            Foreground="Black" 
+            FontWeight="Bold"/>
+            <TextBox 
+             x:Name="txtCorreo"
+             FontFamily="Segoe UI"
+             FontSize="20"
+             Margin="560,267,56,143"
+             Padding="5"/>
+
+            <Label 
+            Content="Cantidad:"
+            FontFamily="Bahnschrift"
+            FontSize="25" 
+            Margin="263,315,311,95"
+            Foreground="Black" 
+            FontWeight="Bold"/>
+            <TextBox 
+             x:Name="txtDireccion"
+             FontFamily="Segoe UI"
+             FontSize="20"
+             Margin="263,361,311,49"
+             Padding="5"/>
+
+            <Image x:Name="ClotheImage"
+                Width="184" 
+                Height="182"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Source="/Resources/Images/ClotheIcon.png"
+                MouseDown="ClickClotheImage"
+                Cursor="Hand" 
+                Margin="52,192,0,0" 
+         />
+
+            <Button x:Name="btnPublish"
+                 Content="Publicar"
+                 Style="{StaticResource GreenButtonStyle}"
+                 Margin="552,349,48,51"
+                 IsEnabled="False"
+                 Click="ClickPublish"
+                 Cursor="Hand"
+         />
+        </Grid>
+    </Viewbox>
+</Page>
