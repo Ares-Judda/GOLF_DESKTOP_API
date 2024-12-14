@@ -120,7 +120,7 @@ namespace GOLF_DESKTOP.Views.Windows
 
             var profileImageBytes = ImageHandler.ConvertImageToBytes((BitmapImage)ProfileImage.Source);
             if (profileImageBytes != null) {
-                string imageUrl = await ApiService.UploadImageAsync(profileImageBytes);
+                string imageUrl = await ApiServiceRest.UploadImageAsync(profileImageBytes);
                 if (string.IsNullOrEmpty(imageUrl)) {
                     MessageBox.Show("No se pudo subir la imagen. Intenta nuevamente.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -128,7 +128,7 @@ namespace GOLF_DESKTOP.Views.Windows
                 user.imagen = imageUrl;
             }
 
-            var response = await ApiService.RegisterUserAsync(user);
+            var response = await ApiServiceRest.RegisterUserAsync(user);
             if (response.IsSuccessStatusCode) {
                 MessageBox.Show("Usuario registrado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 Login login = new Login();

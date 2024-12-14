@@ -16,9 +16,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GOLF_DESKTOP.Model.Entities;
 using Newtonsoft.Json;
-using GOLF_DESKTOP.Services;
 using Grpc.Core;
 using System.Net.Http;
+using GOLF_DESKTOP.Services;
+
 
 namespace GOLF_DESKTOP.Views.Windows {
     /// <summary>
@@ -36,7 +37,7 @@ namespace GOLF_DESKTOP.Views.Windows {
                 email = txtEmailUser.Text,
                 password = psbUser.Password
             };
-                var userData = await ApiService.LoginUserAsync(auth);
+                var userData = await ApiServiceGrpc.LoginUserAsync(auth);
             if (userData != null) {
                 LblLoginError.Visibility = Visibility.Collapsed;
                 var userSingleton = UserSingleton.GetInstance();

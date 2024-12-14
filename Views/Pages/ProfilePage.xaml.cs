@@ -1,4 +1,5 @@
-﻿using GOLF_DESKTOP.Model.Utilities;
+﻿using GOLF_DESKTOP.Model.Entities;
+using GOLF_DESKTOP.Model.Utilities;
 using GOLF_DESKTOP.Services;
 using Microsoft.Win32;
 using System;
@@ -20,19 +21,38 @@ namespace GOLF_DESKTOP.Views.Pages {
         private async void ProfilePage_Loaded(object sender, RoutedEventArgs e) {
             var userReference = UserSingleton.GetInstance();
             string userId = userReference.IdUser;
-            MessageBox.Show(userId);
-            var user = await ApiService.GetUsuarioAsync(userId);
-
+            var user = await ApiServiceRest.GetUsuarioAsync(userId);
             if (user != null) {
-                // Aquí puedes actualizar la interfaz con los datos del usuario
-                // Por ejemplo, mostrar el nombre, correo y la imagen del perfil
-                txtCorreo.Text = user.email;
-                
+                LoadFields(user);
+                if (!string.IsNullOrEmpty(user.imagen)) {
+                    BitmapImage bitmapImage = await LoadImageFromUrlAsync(user.imagen);
 
-                // Cargar la imagen de perfil
-                ProfileImage.Source = await LoadImageFromUrlAsync(user.imagen);
+                    if (bitmapImage != null) {
+                        ProfileImage.Source = bitmapImage;
+                    }
+                }
+            } else {
+                MessageBox.Show("No se pudo obtener la información del usuario.");
             }
         }
+
+        private void LoadFields(User user) {
+            txtNombres.Text = user.name;
+            txtApellidos.Text = user.lastname;
+            txtTelefono.Text = user.phone;
+            txtCorreo.Text = user.email;
+            txtDireccion.Text = user.address;
+            txtCodigoPostal.Text = user.postalCode;
+            dpFechaNacimiento.SelectedDate = user.birthDate;
+            if (user.role == "CLIENT_ROLE") {
+                cbxTipoCuenta.SelectedItem = cbxTipoCuenta.Items.Cast<ComboBoxItem>()
+                    .FirstOrDefault(item => (item.Content as string) == "Cliente");
+            } else if (user.role == "SELLING_ROLE") {
+                cbxTipoCuenta.SelectedItem = cbxTipoCuenta.Items.Cast<ComboBoxItem>()
+                    .FirstOrDefault(item => (item.Content as string) == "Vendedor");
+            }
+        }
+
 
         private async Task<BitmapImage> LoadImageFromUrlAsync(string url) {
             try {
