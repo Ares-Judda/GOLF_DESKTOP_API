@@ -30,7 +30,7 @@ namespace GOLF_DESKTOP.Services {
                     var content = new MultipartFormDataContent {
                     { new ByteArrayContent(imageBytes), "profileImage", "profile.jpg" }
                 };
-                    var response = await client.PostAsync("api/usuarios/upload_image", content);
+                    var response = await client.PostAsync("api/images/upload_image", content);
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode) {
                         dynamic result = JsonConvert.DeserializeObject(jsonResponse);
@@ -59,7 +59,7 @@ namespace GOLF_DESKTOP.Services {
                             phone = result.cellphone,            
                             birthDate = result.datebirth != null ? DateTime.Parse(result.datebirth.ToString()) : (DateTime?)null,  // Convierte la fecha de nacimiento
                             address = result.address,           
-                            postalCode = result.zipcode          
+                            postalCode = result.zipcode 
                         };
                         return user;
                     } catch (JsonException ex) {

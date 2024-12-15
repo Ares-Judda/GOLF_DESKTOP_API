@@ -25,6 +25,7 @@ namespace GOLF_DESKTOP.Views.Pages {
             if (user != null) {
                 LoadFields(user);
                 if (!string.IsNullOrEmpty(user.imagen)) {
+                    MessageBox.Show(user.imagen);
                     BitmapImage bitmapImage = await LoadImageFromUrlAsync(user.imagen);
 
                     if (bitmapImage != null) {
@@ -55,24 +56,53 @@ namespace GOLF_DESKTOP.Views.Pages {
 
 
         private async Task<BitmapImage> LoadImageFromUrlAsync(string url) {
+            if (string.IsNullOrEmpty(url)) {
+                MessageBox.Show("La URL de la imagen está vacía.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return GetDefaultImage(); // Usar imagen predeterminada si la URL es nula o vacía
+            }
+
             try {
                 var bitmap = new BitmapImage();
                 using (var webClient = new System.Net.WebClient()) {
-                    var imageData = await webClient.DownloadDataTaskAsync(url);
-                    using (var stream = new MemoryStream(imageData)) {
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = stream;
-                        bitmap.EndInit();
-                    }
+                    webClient.DownloadDataCompleted += (sender, e) => {
+                        if (e.Error != null) {
+                            MessageBox.Show($"Error al cargar la imagen: {e.Error.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
+                        if (e.Result == null || e.Result.Length == 0) {
+                            MessageBox.Show("La imagen está vacía o no se pudo descargar correctamente.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            ProfileImage.Source = GetDefaultImage(); // Fallback a la imagen predeterminada
+                            return;
+                        }
+
+                        var imageData = e.Result;
+                        using (var stream = new MemoryStream(imageData)) {
+                            bitmap.BeginInit();
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.StreamSource = stream;
+                            bitmap.EndInit();
+                        }
+
+                        // Asignar la imagen al control en el hilo de UI
+                        Dispatcher.Invoke(() => ProfileImage.Source = bitmap);
+                    };
+
+                    // Descargar la imagen de manera asincrónica
+                    webClient.DownloadDataAsync(new Uri(url));
                 }
-                return bitmap;
             } catch (Exception ex) {
-                MessageBox.Show($"Error al cargar la imagen: {ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
+                MessageBox.Show($"Error al cargar la imagen: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return GetDefaultImage(); // Usar imagen predeterminada en caso de fallo
             }
+
+            return null;
         }
+
+        private BitmapImage GetDefaultImage() {
+            return new BitmapImage(new Uri("pack://application:,,,/Images/default_profile.png"));
+        }
+
 
         private void ClickUpdate(object sender, RoutedEventArgs e) {
             // Lógica para actualizar la información del usuario
