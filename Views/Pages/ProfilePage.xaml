@@ -96,9 +96,11 @@
                 FontFamily="Segoe UI"
                 FontSize="20"
                 Margin="565,188,52,222"
-                Padding="5">
-                <ComboBoxItem Content="Cliente"/>
-                <ComboBoxItem Content="Vendedor"/>
+                Padding="5"
+                IsReadOnly="True"
+                IsEnabled="True">
+                <ComboBoxItem Content="Cliente" IsSelected="True" IsEnabled="False" />
+                <ComboBoxItem Content="Vendedor" IsEnabled="False"/>
             </ComboBox>
 
             <Label 
@@ -126,7 +128,12 @@
                 FontFamily="Segoe UI"
                 FontSize="20"
                 Margin="372,274,52,136"
-                Padding="5"/>
+                Padding="5"
+                IsReadOnly="True">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="#757575" Opacity="0.5" />
+                </TextBox.Foreground>
+            </TextBox>
 
             <Label 
                Content="Dirección:"
@@ -171,7 +178,6 @@
                     Content="Actualizar Perfil"
                     Style="{StaticResource GreenButtonStyle}"
                     Margin="560,354,40,46"
-                    IsEnabled="False"
                     Click="ClickUpdate"
                     Cursor="Hand"
             />

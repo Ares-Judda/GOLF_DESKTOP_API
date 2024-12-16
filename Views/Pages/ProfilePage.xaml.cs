@@ -2,6 +2,7 @@
 using GOLF_DESKTOP.Model.Utilities;
 using GOLF_DESKTOP.Services;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -104,8 +105,70 @@ namespace GOLF_DESKTOP.Views.Pages {
         }
 
 
-        private void ClickUpdate(object sender, RoutedEventArgs e) {
-            // Lógica para actualizar la información del usuario
+        private async void ClickUpdate(object sender, RoutedEventArgs e) {
+            try {
+                string imageUrl = await ProcessProfileImage();
+                var updates = CreateUpdateDictionary(imageUrl);
+
+                if (updates.Count == 0) {
+                    MessageBox.Show("No se proporcionaron datos para actualizar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                string json = JsonConvert.SerializeObject(new { actualizaciones = updates });
+
+                var userReference = UserSingleton.GetInstance();
+                string userId = userReference.IdUser;
+
+                var response = await ApiServiceRest.UpdateUserAsync(json, userId);
+
+                if (response.IsSuccessStatusCode) {
+                    MessageBox.Show("Usuario actualizado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                } else {
+                    string errorResponse = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Error al actualizar: {errorResponse}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            } catch (Exception ex) {
+                MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task<string> ProcessProfileImage() {
+            if (ProfileImage.Source == null ||
+                ProfileImage.Source.Equals(new BitmapImage(new Uri("/Resources/Images/UserIcon.png", UriKind.Relative)))) {
+                return null; // No hay nueva imagen seleccionada
+            }
+
+            var profileImageBytes = ImageHandler.ConvertImageToBytes((BitmapImage)ProfileImage.Source);
+            if (profileImageBytes == null) {
+                return null;
+            }
+
+            string imageUrl = await ApiServiceRest.UploadImageAsync(profileImageBytes);
+            if (string.IsNullOrEmpty(imageUrl)) {
+                MessageBox.Show("No se pudo subir la imagen. Intenta nuevamente.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception("Error al subir la imagen");
+            }
+
+            return imageUrl;
+        }
+
+        private Dictionary<string, object> CreateUpdateDictionary(string imageUrl) {
+            var updates = new Dictionary<string, object> {
+                    { "name", GetValueOrNull(txtNombres.Text) },
+                    { "lastname", GetValueOrNull(txtApellidos.Text) },
+                    { "cellphone", GetValueOrNull(txtTelefono.Text) },
+                    { "address", GetValueOrNull(txtDireccion.Text) },
+                    { "datebirth", dpFechaNacimiento.SelectedDate?.ToString("yyyy-MM-dd") },
+                    { "zipcode", GetValueOrNull(txtCodigoPostal.Text) },
+                    { "imagen", imageUrl }
+            };
+            return updates.Where(pair => pair.Value != null)
+                          .ToDictionary(pair => pair.Key, pair => pair.Value);
+        }
+
+        private string GetValueOrNull(string input) {
+            return !string.IsNullOrWhiteSpace(input) ? input.Trim() : null;
         }
 
         private void ClickProfileImage(object sender, MouseButtonEventArgs e) {
