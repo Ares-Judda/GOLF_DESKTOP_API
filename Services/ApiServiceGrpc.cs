@@ -38,5 +38,52 @@ namespace GOLF_DESKTOP.Services {
             return userData;
         }
     }
+
+    public static class ArticulosServiceGrpc
+    {
+        private static readonly string GrpcServerUrl = "http://192.168.1.67:50051";
+
+        // Cliente del servicio ArticulosService
+        private static readonly ArticulosService.ArticulosServiceClient Client = new ArticulosService.ArticulosServiceClient(GrpcChannel.ForAddress(GrpcServerUrl));
+
+        // Método para obtener todos los artículos
+        public static async Task<List<Clothe>> GetAllArticulosAsync()
+        {
+            var articulos = new List<Clothe>();
+
+            try
+            {
+                // Llama al método GetAllArticulos en el backend
+                var response = await Client.GetAllArticulosAsync(new EmptyRequest());
+
+                // Procesa los artículos devueltos por el backend
+                foreach (var articulo in response.Articulos)
+                {
+                    articulos.Add(new Clothe
+                    {
+                        ID_Clothes = articulo.IDClothes,
+                        Name = articulo.Name,
+                        ClotheCategory = articulo.Clothecategory,
+                        Price = articulo.Price,
+                        Quota = articulo.Quota,
+                        Size = articulo.Size
+                    });
+                }
+            }
+            catch (RpcException ex)
+            {
+                if (ex.StatusCode == StatusCode.Internal)
+                {
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return articulos;
+        }
+    }
 }
 
