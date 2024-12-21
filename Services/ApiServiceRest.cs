@@ -22,23 +22,24 @@ namespace GOLF_DESKTOP.Services {
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     return await client.PostAsync("api/usuarios/save_usuario", content);
                 }
-            }
+        }
 
-            public static async Task<string> UploadImageAsync(byte[] imageBytes) {
-                using (var client = new HttpClient()) {
-                    client.BaseAddress = new Uri(BaseUrl);
-                    var content = new MultipartFormDataContent {
-                    { new ByteArrayContent(imageBytes), "profileImage", "profile.jpg" }
-                };
-                    var response = await client.PostAsync("api/usuarios/upload_image", content);
-                    string jsonResponse = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode) {
-                        dynamic result = JsonConvert.DeserializeObject(jsonResponse);
-                        return result.url;
-                    }
-                    return null;
+        public static async Task<string> UploadImageAsync(byte[] imageBytes) {
+            using (var client = new HttpClient()) {
+                client.BaseAddress = new Uri(BaseUrl);
+                var content = new MultipartFormDataContent {
+                { new ByteArrayContent(imageBytes), "profileImage", "profile.jpg" }
+            };
+                var response = await client.PostAsync("api/images/upload_image", content);
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode) {
+                    dynamic result = JsonConvert.DeserializeObject(jsonResponse);
+                    return result.url;
                 }
+                return null;
             }
+        }
+
         public static async Task<User> GetUsuarioAsync(string idUser) {
             using (var client = new HttpClient()) {
                 client.BaseAddress = new Uri(BaseUrl);
@@ -59,7 +60,7 @@ namespace GOLF_DESKTOP.Services {
                             phone = result.cellphone,            
                             birthDate = result.datebirth != null ? DateTime.Parse(result.datebirth.ToString()) : (DateTime?)null,  // Convierte la fecha de nacimiento
                             address = result.address,           
-                            postalCode = result.zipcode          
+                            postalCode = result.zipcode 
                         };
                         return user;
                     } catch (JsonException ex) {
@@ -70,6 +71,16 @@ namespace GOLF_DESKTOP.Services {
                     MessageBox.Show($"Error al obtener el usuario: {jsonResponse}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return null;
                 }
+            }
+        }
+
+        public static async Task<HttpResponseMessage> UpdateUserAsync(string jsonBody, string idUser) {
+            using (var client = new HttpClient()) {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                var encodedIdUser = Uri.EscapeDataString(idUser);
+                return await client.PutAsync($"api/usuarios/update_usuario/{encodedIdUser}", content);
             }
         }
 
