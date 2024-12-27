@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using GOLF_DESKTOP.Model.Utilities;
+using GOLF_DESKTOP.Services;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +27,47 @@ namespace GOLF_DESKTOP.Views.Pages {
         }
 
         private void ClickPublish(object sender, RoutedEventArgs e) {
+            string name = txtNombre.Text.Trim();
+            string priceTxt = txtPrecio.Text.Trim();
+            string quotaTxt = txtCantidad.Text.Trim();
+            ComboBoxItem selectedItem = cbxTalla.SelectedItem as ComboBoxItem;
+            string size = selectedItem?.Content.ToString();
+            ComboBoxItem selectedItemArt = cbxTipoArticulo.SelectedItem as ComboBoxItem;
+            string clotheCategory = selectedItemArt?.Content.ToString();
 
+            if(name != null && priceTxt != null && quotaTxt != null && size != null && clotheCategory != null)
+            {
+                int quota, price;
+                int.TryParse(quotaTxt, out quota);
+                int.TryParse(priceTxt, out price);
+                string idSelling = UserSingleton.GetInstance().IdUser;
+
+                SaveArticle(name, clotheCategory, price, size, quota, idSelling);
+
+            }
+            else
+            {
+                MessageBox.Show("Faltan datos necesarios.",
+                                    "Datos faltantes", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+        }
+
+        private async void SaveArticle(string name, string clotheCategory, int price, string size, int quota, string idSelling)
+        {
+
+
+            bool results = await ArticulosServiceGrpc.SaveArticuloAsync(name, clotheCategory, price, size, quota, idSelling);
+
+            if (results)
+            {
+                MessageBox.Show("Artículo guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                NavigationService.Navigate(new HomePage());
+            }
+            else
+            {
+                MessageBox.Show("No se pudo guardar el artículo.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ClickClotheImage(object sender, MouseButtonEventArgs e) {
@@ -54,5 +96,26 @@ namespace GOLF_DESKTOP.Views.Pages {
                 }
             }
         }
+
+        private void CuadroTextoNumero_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if (textBox != null)
+            {
+                int cursorPos = textBox.SelectionStart;
+
+                string textoOriginal = textBox.Text;
+                string textoFiltrado = new string(textoOriginal.Where(c => char.IsDigit(c)).ToArray());
+
+                if (textoOriginal != textoFiltrado)
+                {
+                    textBox.Text = textoFiltrado;
+
+                    textBox.SelectionStart = cursorPos > textBox.Text.Length ? textBox.Text.Length : cursorPos;
+                }
+            }
+        }
+
     }
 }

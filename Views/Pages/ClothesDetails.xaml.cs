@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GOLF_DESKTOP.Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,11 @@ namespace GOLF_DESKTOP.Views.Pages {
     /// Lógica de interacción para ClothesDetails.xaml
     /// </summary>
     public partial class ClothesDetails : Page {
-        public ClothesDetails() {
+        private Clothe article;
+        public ClothesDetails(Clothe clothe) {
             InitializeComponent();
+            article = clothe;
+            SetUpArticleInformation(article);
         }
 
         private void ClickAddToTheCar(object sender, RoutedEventArgs e) {
@@ -27,7 +31,33 @@ namespace GOLF_DESKTOP.Views.Pages {
         }
 
         private void ClickReturnToHomePage(object sender, RoutedEventArgs e) {
-
+            NavigationService.Navigate(new HomePage());
         }
+
+        private void SetUpArticleInformation(Clothe article)
+        {
+            txtNombre.Text = article.Name;
+            txtCantidad.Text = article.Quota.ToString();
+            txtPrecio.Text = article.Price.ToString();
+
+            foreach (ComboBoxItem item in cbxTipoArticulo.Items)
+            {
+                if (item.Content.ToString() == article.ClotheCategory)
+                {
+                    cbxTipoArticulo.SelectedItem = item;
+                    break;
+                }
+            }
+
+            foreach (ComboBoxItem item in cbxTalla.Items)
+            {
+                if (item.Content.ToString() == article.Size)
+                {
+                    cbxTalla.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
     }
 }
