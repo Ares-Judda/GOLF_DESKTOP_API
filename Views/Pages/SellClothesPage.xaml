@@ -50,7 +50,7 @@
             Foreground="Black" 
             FontWeight="Bold"/>
             <TextBox 
-             x:Name="txtNombres"
+             x:Name="txtNombre"
              FontFamily="Segoe UI"
              FontSize="20"
              Margin="263,174,318,236"
@@ -64,11 +64,12 @@
             Foreground="Black" 
             FontWeight="Bold"/>
             <TextBox 
-             x:Name="txtApellidos"
+             x:Name="txtPrecio"
              FontFamily="Segoe UI"
              FontSize="20"
              Margin="263,267,318,143"
-             Padding="5"/>
+             Padding="5"
+             TextChanged="CuadroTextoNumero_TextChanged"/>
 
             <Label 
             Content="Tipo de articulo:"
@@ -78,13 +79,14 @@
             Foreground="Black" 
             FontWeight="Bold"/>
             <ComboBox 
-             x:Name="cbxTipoCuenta"
+             x:Name="cbxTipoArticulo"
              FontFamily="Segoe UI"
              FontSize="20"
              Margin="560,174,56,236"
              Padding="5">
                 <ComboBoxItem Content="Sudaderas"/>
                 <ComboBoxItem Content="Pantalones"/>
+                <ComboBoxItem Content="Camisa"/>
             </ComboBox>
 
             <Label 
@@ -94,12 +96,19 @@
             Margin="560,222,14,188"
             Foreground="Black" 
             FontWeight="Bold"/>
-            <TextBox 
-             x:Name="txtCorreo"
-             FontFamily="Segoe UI"
-             FontSize="20"
-             Margin="560,267,56,143"
-             Padding="5"/>
+
+            <ComboBox 
+            x:Name="cbxTalla"
+            FontFamily="Segoe UI"
+            FontSize="20"
+            Margin="560,267,56,143"
+            Padding="5">
+                <ComboBoxItem Content="Extra chica"/>
+                <ComboBoxItem Content="Chica"/>
+                <ComboBoxItem Content="Mediana"/>
+                <ComboBoxItem Content="Grande"/>
+                <ComboBoxItem Content="Extra grande"/>
+            </ComboBox>
 
             <Label 
             Content="Cantidad:"
@@ -109,11 +118,12 @@
             Foreground="Black" 
             FontWeight="Bold"/>
             <TextBox 
-             x:Name="txtDireccion"
+             x:Name="txtCantidad"
              FontFamily="Segoe UI"
              FontSize="20"
              Margin="263,361,311,49"
-             Padding="5"/>
+             Padding="5"
+             TextChanged="CuadroTextoNumero_TextChanged"/>
 
             <Image x:Name="ClotheImage"
                 Width="184" 
@@ -130,7 +140,7 @@
                  Content="Publicar"
                  Style="{StaticResource GreenButtonStyle}"
                  Margin="552,349,48,51"
-                 IsEnabled="False"
+                 IsEnabled="True"
                  Click="ClickPublish"
                  Cursor="Hand"
          />

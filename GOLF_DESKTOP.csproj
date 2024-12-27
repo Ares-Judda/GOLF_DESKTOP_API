@@ -21,6 +21,7 @@
     <None Remove="Resources\Images\ShopingCarIcon.png" />
     <None Remove="Resources\Images\UserIcon.png" />
     <None Remove="Services\clothes.proto" />
+    <None Remove="Services\sales.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +56,7 @@
 	<ItemGroup>
 		<Protobuf Include="Services\auth.proto" GrpcServices="Client" />
 		<Protobuf Include="Services\clothes.proto" GrpcServices="Client" />
+		<Protobuf Include="Services\sales.proto" GrpcServices="Client" />
 		<Protobuf Include="Services\user.proto" GrpcServices="Client" />
 	</ItemGroup>
 

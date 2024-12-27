@@ -7,6 +7,7 @@ service ArticulosService {
     rpc DeleteArticulo (DeleteArticuloRequest) returns (DeleteArticuloResponse);
     rpc UpdateArticulo (UpdateArticuloRequest) returns (UpdateArticuloResponse);
     rpc GetArticuloByName (GetArticuloByNameRequest) returns (ArticulosResponse); 
+    rpc GetArticuloByCategory (GetArticuloByCategoryRequest) returns (ArticulosResponse);
 }
 
 message EmptyRequest {}
@@ -34,6 +35,7 @@ message SaveArticuloRequest {
     int32 price = 3;
     string size = 4;
     int32 quota = 5;
+    string ID_Selling = 6;
 }
 
 message SaveArticuloResponse {  
@@ -59,4 +61,8 @@ message UpdateArticuloResponse {  // Respuesta de actualización
 
 message GetArticuloByNameRequest {
     string name = 1;  // Nombre del artículo a buscar
+}
+
+message GetArticuloByCategoryRequest {
+    string clothecategory = 1;  
 }
