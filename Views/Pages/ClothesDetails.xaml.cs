@@ -1,4 +1,6 @@
 ﻿using GOLF_DESKTOP.Model.Entities;
+using GOLF_DESKTOP.Views.Windows;
+using GOLF_DESKTOP.Model.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +25,26 @@ namespace GOLF_DESKTOP.Views.Pages {
         public ClothesDetails(Clothe clothe) {
             InitializeComponent();
             article = clothe;
+            var clotheSingleton = ClotheSingleton.GetInstance();
+            clotheSingleton.ID_Clothes = article.ID_Clothes;
+            clotheSingleton.Quota = article.Quota;
             SetUpArticleInformation(article);
         }
 
         private void ClickAddToTheCar(object sender, RoutedEventArgs e) {
+            var clothe = ClotheSingleton.GetInstance();
+            if (clothe.Quota > 0) {
+                SelectQuantityWindow selectQuantityWindow = new SelectQuantityWindow(clothe.Quota) {
+                    Owner = Application.Current.MainWindow
+                };
 
+                if (selectQuantityWindow.ShowDialog() == true) {
+                    int selectedQuantity = selectQuantityWindow.SelectedQuantity;
+                    MessageBox.Show($"Has agregado {selectedQuantity} prendas al carrito.");
+                }
+            } else {
+                MessageBox.Show("No hay suficientes existencias disponibles.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ClickReturnToHomePage(object sender, RoutedEventArgs e) {
