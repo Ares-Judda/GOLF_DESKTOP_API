@@ -32,22 +32,20 @@ namespace GOLF_DESKTOP.Views.Windows {
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e) {
-            // Verificar si hay un valor seleccionado en el ComboBox
             if (QuantityComboBox.SelectedItem != null) {
-                // Obtener la cantidad seleccionada
                 SelectedQuantity = (int)QuantityComboBox.SelectedItem;
 
                 var clothe = ClotheSingleton.GetInstance();
                 var user = UserSingleton.GetInstance();
 
                 try {
-                    // Llamar al servicio API para agregar al carrito
+                   
                     string idUser = user.IdUser;
                     var response = await ApiServiceRest.AddClotheToShoppingCarAsync(clothe.ID_Clothes, SelectedQuantity, idUser);
 
                     if (response.IsSuccessStatusCode) {
                         MessageBox.Show("Artículo añadido al carrito exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                        this.DialogResult = true; // Cerrar la ventana indicando éxito
+                        this.DialogResult = true; 
                     } else {
                         string errorMessage = await response.Content.ReadAsStringAsync();
                         MessageBox.Show($"Error al agregar al carrito: {errorMessage}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -56,7 +54,7 @@ namespace GOLF_DESKTOP.Views.Windows {
                     MessageBox.Show($"Ocurrió un error al procesar la solicitud: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             } else {
-                // Mostrar un mensaje si no hay cantidad seleccionada
+               
                 MessageBox.Show("Por favor selecciona una cantidad antes de continuar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }

@@ -134,7 +134,57 @@ namespace GOLF_DESKTOP.Services {
             }
         }
 
+        public static async Task<HttpResponseMessage> UpdateQuantityAsync(int? idClothes, int quantity, string idUser) {
+            if (idClothes == null) throw new ArgumentNullException(nameof(idClothes), "El ID de ropa no puede ser nulo.");
+            using (var client = new HttpClient()) {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
+                var jsonBody = new {
+                    ID_Clothes = idClothes,
+                    newQuantity = quantity
+                };
+                string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonBody);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var encodedIdUser = Uri.EscapeDataString(idUser);
+
+                return await client.PostAsync($"api/shoppingCar/update_quantity/{encodedIdUser}", content);
+            }
+        }
+
+        public static async Task<HttpResponseMessage> RemoveClotheFromCarAsync(int? idClothes, string idUser) {
+            if (idClothes == null) throw new ArgumentNullException(nameof(idClothes), "El ID de ropa no puede ser nulo.");
+            using (var client = new HttpClient()) {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var jsonBody = new {
+                    ID_Clothes = idClothes,
+                };
+                string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonBody);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var encodedIdUser = Uri.EscapeDataString(idUser);
+
+                return await client.PostAsync($"api/shoppingCar/delete_from_car/{encodedIdUser}", content);
+            }
+        }
+
+        public static async Task<HttpResponseMessage> CheckAndUpdateCartAsync(string idUser, List<dynamic> updatedClothes) {
+            if (string.IsNullOrEmpty(idUser))
+                throw new ArgumentNullException(nameof(idUser), "El ID del usuario no puede ser nulo.");
+            if (updatedClothes == null || !updatedClothes.Any())
+                throw new ArgumentNullException(nameof(updatedClothes), "La lista de ropa actualizada no puede estar vacía.");
+            using (var client = new HttpClient()) {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var jsonBody = new {
+                    updatedClothes = updatedClothes
+                };
+                string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonBody);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var encodedIdUser = Uri.EscapeDataString(idUser);
+                return await client.PostAsync($"api/sales/buy_shopping_car/{encodedIdUser}", content);
+            }
+        }
     }
 }
 
