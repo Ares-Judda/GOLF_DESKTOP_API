@@ -106,11 +106,13 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                         <RowDefinition />
+                                        <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="Black" />
                                     <TextBlock Grid.Row="1" Text="{Binding ClotheCategory}" FontStyle="Italic" Foreground="Gray" />
                                     <TextBlock Grid.Row="2" Text="{Binding Size, StringFormat=Talla: {0}}" Foreground="Black" />
                                     <TextBlock Grid.Row="3" Text="{Binding Quota, StringFormat=Existencias: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="5" Text="{Binding ID_Clothes, StringFormat=Codigo: {0}}" Foreground="Black"/>
                                 </Grid>
 
                                 <!-- Precio del artículo -->

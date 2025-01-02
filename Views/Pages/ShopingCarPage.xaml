@@ -8,6 +8,17 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ShopingCarPage">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary 
+            Source="/Resources/Styles/Styles.xaml"/>
+                            <ResourceDictionary 
+            Source="/Resources/Styles/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Viewbox Stretch = "Fill">
         <Grid Height="450"
       Width="800">
@@ -26,7 +37,81 @@
                 <Rectangle.RadiusY>20</Rectangle.RadiusY>
 
             </Rectangle>
-            
+
+            <Rectangle x:Name="rtglTotal" Margin="320,373,46,25" Visibility="Hidden">
+
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#FFF7E0"/>
+                </Rectangle.Fill>
+
+                <Rectangle.RadiusX>20</Rectangle.RadiusX>
+                <Rectangle.RadiusY>20</Rectangle.RadiusY>
+
+
+
+            </Rectangle>
+
+            <TextBlock x:Name="txbBuy"
+                       Visibility="Hidden"
+                       Text="{Binding Pago, StringFormat=Pago: {0:C}}" 
+                       Foreground="Black" 
+                       FontWeight="Bold" 
+                       FontSize="20" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Top" Margin="333,382,0,0" Width="293" Height="34" />
+
+
+            <ListView x:Name="listaArticulos" HorizontalAlignment="Center" Height="286" VerticalAlignment="Center" Width="707" Background="#FFF7E0"  MouseDoubleClick="MouseDoubleClick">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="5" Padding="10" Background="White"
+                                HorizontalAlignment="Center">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <!-- Imagen -->
+                                    <ColumnDefinition Width="200" />
+                                    <!-- Detalles del artículo -->
+                                    <ColumnDefinition Width="275" />
+                                    <!-- Precio -->
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Imagen del artículo -->
+                                <Image Grid.Column="0" Source="/Resources/Images/ClotheIcon.png" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
+
+                                <!-- Detalles del artículo -->
+                                <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="Black" />
+                                    <TextBlock Grid.Row="1" Text="{Binding ClotheCategory}" FontStyle="Italic" Foreground="Gray" />
+                                    <TextBlock Grid.Row="2" Text="{Binding Size, StringFormat=Talla: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="3" Text="{Binding Quota, StringFormat=Existencias: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="4" Text="{Binding Quantity, StringFormat=Solicitadas: {0}}" Foreground="Black"/>
+                                    <TextBlock Grid.Row="5" Text="{Binding ID_Clothes, StringFormat=Codigo: {0}}" Foreground="Black"/>
+                                </Grid>
+                                <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat=Precio: {0}}" Foreground="Black" 
+                   FontWeight="Bold" FontSize="14" 
+                   HorizontalAlignment="Center" VerticalAlignment="Top" />
+                                <TextBlock Grid.Column="2" 
+                                   Text="{Binding Total, StringFormat=Total: {0:C}}" 
+                                   Foreground="Green" 
+                                   FontWeight="Bold" 
+                                   FontSize="14" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
             <Image Source="/Resources/Images/Return.png"
        Margin="8,10,758,411" 
        RenderTransformOrigin="-0.777,-2.037"
@@ -42,8 +127,15 @@
            Foreground = "Black" 
            FontWeight="Bold"
     />
+            <Button x:Name="btnBuy" Content="Pagar" 
+        HorizontalAlignment="Left" 
+        
+        Style="{StaticResource GreenButtonStyle}"
+        Margin="615,380,0,32" 
+        Width="132"  Height="38" RenderTransformOrigin="0.503,0.558" Click="btnBuy_Click"
+                   Visibility="Hidden" />
 
-          
+
         </Grid>
     </Viewbox>
 </Page>

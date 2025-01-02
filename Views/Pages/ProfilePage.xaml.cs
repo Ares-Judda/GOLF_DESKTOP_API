@@ -73,7 +73,7 @@ namespace GOLF_DESKTOP.Views.Pages {
 
                         if (e.Result == null || e.Result.Length == 0) {
                             MessageBox.Show("La imagen está vacía o no se pudo descargar correctamente.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            ProfileImage.Source = GetDefaultImage(); // Fallback a la imagen predeterminada
+                            ProfileImage.Source = GetDefaultImage(); 
                             return;
                         }
 
@@ -84,12 +84,8 @@ namespace GOLF_DESKTOP.Views.Pages {
                             bitmap.StreamSource = stream;
                             bitmap.EndInit();
                         }
-
-                        // Asignar la imagen al control en el hilo de UI
                         Dispatcher.Invoke(() => ProfileImage.Source = bitmap);
                     };
-
-                    // Descargar la imagen de manera asincrónica
                     webClient.DownloadDataAsync(new Uri(url));
                 }
             } catch (Exception ex) {
@@ -101,7 +97,7 @@ namespace GOLF_DESKTOP.Views.Pages {
         }
 
         private BitmapImage GetDefaultImage() {
-            return new BitmapImage(new Uri("pack://application:,,,/Images/default_profile.png"));
+            return new BitmapImage(new Uri("../Images/default_profile.png"));
         }
 
 

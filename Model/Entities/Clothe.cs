@@ -14,6 +14,8 @@ namespace GOLF_DESKTOP.Model.Entities
         public string ?ClotheCategory { get; set; }
         public int Price { get; set; }
         public int Quota { get; set; }
+        public int? Quantity {  get; set; }
         public string ?Size { get; set; }
+        public decimal ?Total => Price * Quantity;
     }
 }
