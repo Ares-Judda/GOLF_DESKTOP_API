@@ -16,7 +16,7 @@
                 <SolidColorBrush Color="#FFF7E0"/>
             </Grid.Background>
 
-            <Rectangle Margin="30,103,30,20">
+            <Rectangle Margin="30,72,30,20">
 
                 <Rectangle.Fill>
                     <SolidColorBrush Color="#FDCD4B"/>
@@ -26,24 +26,6 @@
                 <Rectangle.RadiusY>20</Rectangle.RadiusY>
 
             </Rectangle>
-
-            <ComboBox x:Name="cbxCategory"
-           Margin="635,67,44,0"
-           Background="#FEFFFE"
-           BorderThickness="0" VerticalAlignment="Top">
-                <ComboBoxItem Content="Pans" />
-                <ComboBoxItem Content="Sudaderas" />
-            </ComboBox>
-
-
-            <Label 
-        Content = "Filtrar por:"
-        FontFamily = "Rockwell Extra Bold"
-        FontSize = "20" 
-        Margin = "487,58,165,352"
-        Foreground = "Black" 
-        FontWeight="Bold"
- />
 
             <Image Source="/Resources/Images/PDFIcon.png"
                    Margin="703,4,26,383" 
@@ -59,21 +41,47 @@
         FontWeight="Bold"
  />
 
-            <TextBox x:Name = "txbSearchIngredient" 
-          HorizontalAlignment = "Right" 
-          VerticalAlignment = "Top"
-          FontSize = "20" 
-          FontFamily = "Segoe UI"
-          FontStyle = "Italic"
-          Height = "30"
-          Width = "350" 
-          Margin = "0,63,420,0"
-          Padding = "30,0,0,0">
-            </TextBox>
+            <ListView x:Name="listaArticulos" HorizontalAlignment="Center" Height="323" VerticalAlignment="Top" Width="708" Background="#FFF7E0" Margin="0,87,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="5" Padding="10" Background="White"
+                    HorizontalAlignment="Center">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <!-- Imagen -->
+                                    <ColumnDefinition Width="200" />
+                                    <!-- Detalles del artículo -->
+                                    <ColumnDefinition Width="275" />
+                                    <!-- Precio -->
+                                </Grid.ColumnDefinitions>
 
-            <Image Source = "\Resources\Images\Search.png" 
-        Margin = "347,66,432,360" RenderTransformOrigin="3.152,2.714"
-      />
+                                <!-- Imagen del artículo -->
+                                <Image Grid.Column="0" Source="/Resources/Images/ClotheIcon.png" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
+
+                                <!-- Detalles del artículo -->
+                                <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="Black" />
+                                    <TextBlock Grid.Row="1" Text="{Binding ClotheCategory}" FontStyle="Italic" Foreground="Gray" />
+                                    <TextBlock Grid.Row="2" Text="{Binding Size, StringFormat=Talla: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="3" Text="{Binding Quota, StringFormat=Existencias: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="5" Text="{Binding ID_Clothes, StringFormat=Codigo: {0}}" Foreground="Black"/>
+                                </Grid>
+                                <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat=Precio: {0}}" Foreground="Black" 
+       FontWeight="Bold" FontSize="14" 
+       HorizontalAlignment="Center" VerticalAlignment="Top" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Viewbox>
 </Page>
