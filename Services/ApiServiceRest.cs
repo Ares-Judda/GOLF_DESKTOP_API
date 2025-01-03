@@ -185,6 +185,41 @@ namespace GOLF_DESKTOP.Services {
                 return await client.PostAsync($"api/sales/buy_shopping_car/{encodedIdUser}", content);
             }
         }
+
+
+        public static async Task<List<Clothe>> GetInventoryAsync(string idUser) {
+            using (var client = new HttpClient()) {
+                var articles = new List<Clothe>();
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var encodedIdUser = Uri.EscapeDataString(idUser);
+
+                var response = await client.GetAsync($"api/clothes/get_inventory_by_selling/{encodedIdUser}");
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode) {
+                    try {
+                        var result = JsonConvert.DeserializeObject<List<Clothe>>(jsonResponse);
+
+                        if (result != null && result.Any()) {
+                            articles.AddRange(result);
+                        } else {
+                            dynamic errorResponse = JsonConvert.DeserializeObject(jsonResponse);
+                            if (errorResponse != null && errorResponse.message != null) {
+                                MessageBox.Show(errorResponse.message.ToString(), "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        }
+
+                        return articles;
+                    } catch (JsonException) {
+                        return null;
+                    }
+                } else {
+                    MessageBox.Show($"Error al obtener el carrito: {jsonResponse}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return null;
+                }
+            }
+        }
     }
 }
 
