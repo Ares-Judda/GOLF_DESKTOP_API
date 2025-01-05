@@ -64,6 +64,7 @@ namespace GOLF_DESKTOP.Views.Pages {
         private void CalculatePago() {
             Pago = Clothes.Sum(c => c.Total ?? 0);
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -91,28 +92,18 @@ namespace GOLF_DESKTOP.Views.Pages {
         private async void btnBuy_Click(object sender, RoutedEventArgs e) {
             var user = UserSingleton.GetInstance();
             string userId = user.IdUser;
-
-            // Convertir la colección ObservableCollection<Clothe> a una lista dinámica
             var updatedClothes = Clothes.Select(c => new {
                 ID_Clothes = c.ID_Clothes,
                 newQuantity = c.Quantity
-            }).Cast<dynamic>().ToList();  // Convertir a List<dynamic>
-
+            }).Cast<dynamic>().ToList(); 
             try {
-                // Llamada al API
                 var result = await ApiServiceRest.CheckAndUpdateCartAsync(userId, updatedClothes);
 
                 if (result.IsSuccessStatusCode) {
                     MessageBox.Show("Compra realizada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     NavigationService.Navigate(new ShopingCarPage());
                 } else {
-                    // Obtener el mensaje de error directamente desde la respuesta
                     string errorMessage = await result.Content.ReadAsStringAsync();
-
-                    // Si el errorMessage tiene algún contenido adicional, como "error:", eliminamos eso
-                    if (errorMessage.StartsWith("{error:")) {
-                        errorMessage = errorMessage.Substring(8, errorMessage.Length - 9); // Eliminar "{error:" y "}"
-                    }
                     MessageBox.Show($"Error al procesar la compra: {errorMessage}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             } catch (Exception ex) {
@@ -120,5 +111,8 @@ namespace GOLF_DESKTOP.Views.Pages {
             }
         }
 
+        private void btnBuyHistory_Click(object sender, RoutedEventArgs e) {
+            NavigationService.Navigate(new HistoryPurchasePage());
+        }
     }
 }

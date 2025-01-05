@@ -15,7 +15,7 @@ namespace GOLF_DESKTOP.Services
 {
     public static class ApiServiceGrpc
     {
-        private static readonly string GrpcServerUrl = "http://127.0.0.1:50051";
+        private static readonly string GrpcServerUrl = "http://localhost:50051";
 
         private static readonly AuthService.AuthServiceClient Client = new AuthService.AuthServiceClient(GrpcChannel.ForAddress(GrpcServerUrl));
 
@@ -51,7 +51,7 @@ namespace GOLF_DESKTOP.Services
 
     public static class ArticulosServiceGrpc
     {
-        private static readonly string GrpcServerUrl = "http://127.0.0.1:50054";
+        private static readonly string GrpcServerUrl = "http://localhost:50054";
 
         private static readonly ArticulosService.ArticulosServiceClient Client = new ArticulosService.ArticulosServiceClient(GrpcChannel.ForAddress(GrpcServerUrl));
 
@@ -305,7 +305,7 @@ namespace GOLF_DESKTOP.Services
 
     public static class SalesServiceGrpc
     {
-        private static readonly string GrpcServerUrl = "http://192.168.1.75:50052";
+        private static readonly string GrpcServerUrl = "http://localhost:50052";
 
         private static readonly VentasService.VentasServiceClient Client = new VentasService.VentasServiceClient(GrpcChannel.ForAddress(GrpcServerUrl));
 

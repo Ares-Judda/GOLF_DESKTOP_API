@@ -1,4 +1,4 @@
-﻿<Page x:Class="GOLF_DESKTOP.Views.Pages.ShopingCarPage"
+﻿<Page x:Class="GOLF_DESKTOP.Views.Pages.HistoryPurchasePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:GOLF_DESKTOP.Views.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ShopingCarPage">
+      Title="HistoryPurchasePage">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -50,7 +50,6 @@
 
 
             </Rectangle>
-
             <TextBlock x:Name="txbBuy"
                        Visibility="Hidden"
                        Text="{Binding Pago, StringFormat=Pago: {0:C}}" 
@@ -61,7 +60,7 @@
                        VerticalAlignment="Top" Margin="333,382,0,0" Width="293" Height="34" />
 
 
-            <ListView x:Name="listaArticulos" HorizontalAlignment="Center" Height="291" VerticalAlignment="Top" Width="708" Background="#FFF7E0"  MouseDoubleClick="MouseDoubleClick" Margin="0,77,0,0">
+            <ListView x:Name="listaArticulos" HorizontalAlignment="Center" Height="334" VerticalAlignment="Top" Width="708" Background="#FFF7E0" Margin="0,82,0,0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="5" Padding="10" Background="White"
@@ -69,10 +68,17 @@
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150" />
+                                    <!-- Imagen -->
                                     <ColumnDefinition Width="200" />
+                                    <!-- Detalles del artículo -->
                                     <ColumnDefinition Width="275" />
+                                    <!-- Precio -->
                                 </Grid.ColumnDefinitions>
+
+                                <!-- Imagen del artículo -->
                                 <Image Grid.Column="0" Source="/Resources/Images/ClotheIcon.png" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
+
+                                <!-- Detalles del artículo -->
                                 <Grid Grid.Column="1" HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
@@ -81,13 +87,15 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                         <RowDefinition />
+                                        <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="Black" />
-                                    <TextBlock Grid.Row="1" Text="{Binding ClotheCategory}" FontStyle="Italic" Foreground="Gray" />
-                                    <TextBlock Grid.Row="2" Text="{Binding Size, StringFormat=Talla: {0}}" Foreground="Black" />
-                                    <TextBlock Grid.Row="3" Text="{Binding Quota, StringFormat=Existencias: {0}}" Foreground="Black" />
-                                    <TextBlock Grid.Row="4" Text="{Binding Quantity, StringFormat=Solicitadas: {0}}" Foreground="Black"/>
-                                    <TextBlock Grid.Row="5" Text="{Binding ID_Clothes, StringFormat=Codigo: {0}}" Foreground="Black"/>
+                                    <TextBlock Grid.Row="0" Text="{Binding FechaLegible, StringFormat=Fecha:}" FontWeight="Bold" FontSize="16" Foreground="Black" />
+                                    <TextBlock Grid.Row="1" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="Black" />
+                                    <TextBlock Grid.Row="2" Text="{Binding ClotheCategory}" FontStyle="Italic" Foreground="Gray" />
+                                    <TextBlock Grid.Row="3" Text="{Binding Size, StringFormat=Talla: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="4" Text="{Binding Quota, StringFormat=Existencias: {0}}" Foreground="Black" />
+                                    <TextBlock Grid.Row="5" Text="{Binding Quantity, StringFormat=Solicitadas: {0}}" Foreground="Black"/>
+                                    <TextBlock Grid.Row="6" Text="{Binding ID_Clothes, StringFormat=Codigo: {0}}" Foreground="Black"/>
                                 </Grid>
                                 <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat=Precio: {0}}" Foreground="Black" 
        FontWeight="Bold" FontSize="14" 
@@ -113,27 +121,13 @@
 
 
             <Label 
-           Content = "Carrito de compras"
+           Content = "Historial de pedidos"
            FontFamily = "Rockwell Extra Bold"
            FontSize = "30" 
-           Margin = "80,15,354,387"
+           Margin = "80,15,320,387"
            Foreground = "Black" 
            FontWeight="Bold"
     />
-            <Button x:Name="btnBuy" Content="Pagar" 
-        HorizontalAlignment="Left" 
-        
-        Style="{StaticResource GreenButtonStyle}"
-        Margin="615,380,0,32" 
-        Width="132"  Height="38" RenderTransformOrigin="0.503,0.558" Click="btnBuy_Click"
-                   Visibility="Hidden" />
-
-            <Button x:Name="btnBuyHitory" Content="Historial de compras" 
-                    HorizontalAlignment="Left" 
-
-                    Style="{StaticResource YellowButtonStyle}"
-                    Margin="514,24,0,392" 
-                    Width="256"  Height="NaN" RenderTransformOrigin="0.503,0.558" Click="btnBuyHistory_Click" />
 
 
         </Grid>

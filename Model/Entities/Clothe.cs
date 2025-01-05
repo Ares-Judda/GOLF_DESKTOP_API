@@ -17,5 +17,9 @@ namespace GOLF_DESKTOP.Model.Entities
         public int? Quantity {  get; set; }
         public string ?Size { get; set; }
         public decimal ?Total => Price * Quantity;
+        public DateTime? Purchase_date { get; set; }
+        public string FechaLegible => Purchase_date.HasValue
+        ? Purchase_date.Value.ToString("dd/MM/yyyy HH:mm")
+        : "Sin fecha";
     }
 }
