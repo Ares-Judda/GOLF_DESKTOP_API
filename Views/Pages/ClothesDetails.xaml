@@ -55,7 +55,9 @@
          FontFamily="Segoe UI"
          FontSize="20"
          Margin="263,147,318,263"
-         Padding="5"/>
+         Padding="5"
+                IsEnabled="False"
+                IsReadOnly="True"/>
 
             <Label 
         Content="Precio:"
@@ -69,7 +71,9 @@
          FontFamily="Segoe UI"
          FontSize="20"
          Margin="266,236,314,174"
-         Padding="5"/>
+         Padding="5"
+                IsEnabled="False"
+                IsReadOnly="True"/>
 
             <Label 
         Content="Tipo de articulo:"
@@ -84,9 +88,9 @@
          FontSize="20"
          Margin="560,140,56,270"
          Padding="5">
-                <ComboBoxItem Content="Sudaderas"/>
-                <ComboBoxItem Content="Pantalones"/>
-                <ComboBoxItem Content="Camisa"/>
+                <ComboBoxItem Content="Sudaderas" IsEnabled="False"/>
+                <ComboBoxItem Content="Pantalones" IsEnabled="False"/>
+                <ComboBoxItem Content="Camisa" IsEnabled="False"/>
             </ComboBox>
 
             <Label 
@@ -103,11 +107,11 @@
                 FontSize="20"
                 Margin="560,236,56,174"
                 Padding="5">
-                <ComboBoxItem Content="Extra chica"/>
-                <ComboBoxItem Content="Chica"/>
-                <ComboBoxItem Content="Mediana"/>
-                <ComboBoxItem Content="Grande"/>
-                <ComboBoxItem Content="Extra grande"/>
+                <ComboBoxItem Content="Extra chica" IsEnabled="False"/>
+                <ComboBoxItem Content="Chica" IsEnabled="False"/>
+                <ComboBoxItem Content="Mediana" IsEnabled="False"/>
+                <ComboBoxItem Content="Grande" IsEnabled="False"/>
+                <ComboBoxItem Content="Extra grande" IsEnabled="False"/>
             </ComboBox>
 
             <Label 
@@ -122,7 +126,9 @@
          FontFamily="Segoe UI"
          FontSize="20"
          Margin="266,329,308,81"
-         Padding="5"/>
+         Padding="5"
+                IsEnabled="False"
+                IsReadOnly="True"/>
 
             <Image x:Name="ClotheImage"
             Width="184" 
@@ -142,7 +148,6 @@
              Content="Agregar al carrito"
              Style="{StaticResource GreenButtonStyle}"
              Margin="542,370,58,30"
-             IsEnabled="False"
              Click="ClickAddToTheCar"
              Cursor="Hand"
      />

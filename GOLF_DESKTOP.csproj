@@ -16,6 +16,7 @@
     <None Remove="Resources\Images\LogoutIcon.png" />
     <None Remove="Resources\Images\MenuIcon.png" />
     <None Remove="Resources\Images\PasswordIcon.png" />
+    <None Remove="Resources\Images\PDFIcon.png" />
     <None Remove="Resources\Images\Return.png" />
     <None Remove="Resources\Images\SalesIcon.png" />
     <None Remove="Resources\Images\ShopingCarIcon.png" />
@@ -30,6 +31,7 @@
     <Resource Include="Resources\Images\InventoryIcon.png" />
     <Resource Include="Resources\Images\LogoutIcon.png" />
     <Resource Include="Resources\Images\MenuIcon.png" />
+    <Resource Include="Resources\Images\PDFIcon.png" />
     <Resource Include="Resources\Images\Return.png" />
   </ItemGroup>
 
@@ -41,8 +43,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="itext7" Version="9.0.0" />
     <PackageReference Include="log4net" Version="3.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.65" />
   </ItemGroup>
 
   <ItemGroup>
