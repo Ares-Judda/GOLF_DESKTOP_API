@@ -72,7 +72,7 @@
                                     <ColumnDefinition Width="200" />
                                     <ColumnDefinition Width="275" />
                                 </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" Source="/Resources/Images/ClotheIcon.png" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
+                                <Image Grid.Column="0" Source="{Binding ImageSource}" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
                                 <Grid Grid.Column="1" HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
