@@ -39,6 +39,7 @@ namespace GOLF_DESKTOP.Views.Pages {
             txtNombre.Text = article.Name;
             txtCantidad.Text = article.Quota.ToString();
             txtPrecio.Text = article.Price.ToString();
+            ClotheImage.Source = article.ImageSource;
 
             foreach (ComboBoxItem item in cbxTipoArticulo.Items)
             {

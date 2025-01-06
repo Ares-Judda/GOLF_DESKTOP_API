@@ -40,6 +40,29 @@ namespace GOLF_DESKTOP.Services {
             }
         }
 
+        public static async Task<bool> DeleteImageAsync(string filename)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl); 
+                var requestUri = $"api/images/delete_image/{filename}";
+
+                var response = await client.DeleteAsync(requestUri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Imagen eliminada exitosamente.");
+                    return true;
+                }
+                else
+                {
+                    string errorMessage = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Error al eliminar la imagen: {response.StatusCode} - {errorMessage}");
+                    return false;
+                }
+            }
+        }
+
         public static async Task<User> GetUsuarioAsync(string idUser) {
             using (var client = new HttpClient()) {
                 client.BaseAddress = new Uri(BaseUrl);

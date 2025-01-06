@@ -4,6 +4,7 @@ using GOLF_DESKTOP.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace GOLF_DESKTOP.Views.Pages {
 
         public ClothesPage() {
             InitializeComponent();
-            cargarArticulos();
+            getArticles();
         }
 
         private async void MouseDownSearch(object sender, MouseButtonEventArgs e)
@@ -41,10 +42,22 @@ namespace GOLF_DESKTOP.Views.Pages {
                     return;
                 }
 
-                var articles = await ArticulosServiceGrpc.GetArticleByNameAsync(articleName);
+                var articles = await ArticulosServiceGrpc.GetArticulosBySellingAndNameAsync(UserSingleton.GetInstance().IdUser, articleName);
 
                 if (articles.Any())
                 {
+                    foreach (var clothe in articles)
+                    {
+                        if (!string.IsNullOrEmpty(clothe.Image))
+                        {
+                            clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                        }
+                        else
+                        {
+                            clothe.ImageSource = GetDefaultImage();
+                        }
+                    }
+
                     listaArticulosVendedor.ItemsSource = articles;
                 }
                 else
@@ -66,10 +79,22 @@ namespace GOLF_DESKTOP.Views.Pages {
                 ComboBoxItem selectedItem = cbxCategory.SelectedItem as ComboBoxItem;
                 string category = selectedItem?.Content.ToString();
 
-                var articles = await ArticulosServiceGrpc.GetArticleByCategoryAsync(category);
+                var articles = await ArticulosServiceGrpc.GetArticulosBySellingAndCategoryAsync(UserSingleton.GetInstance().IdUser, category);
 
                 if (articles.Any())
                 {
+                    foreach (var clothe in articles)
+                    {
+                        if (!string.IsNullOrEmpty(clothe.Image))
+                        {
+                            clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                        }
+                        else
+                        {
+                            clothe.ImageSource = GetDefaultImage();
+                        }
+                    }
+
                     listaArticulosVendedor.ItemsSource = articles;
                 }
                 else
@@ -85,7 +110,7 @@ namespace GOLF_DESKTOP.Views.Pages {
         }
 
 
-        private async void cargarArticulos()
+        private async void getArticles()
         {
             var articulos = await ArticulosServiceGrpc.GetArticulosBySellingAsync(UserSingleton.GetInstance().IdUser);
 
@@ -93,9 +118,55 @@ namespace GOLF_DESKTOP.Views.Pages {
 
             if (Clothes.Any())
             {
+                foreach (var clothe in Clothes)
+                {
+                    if (!string.IsNullOrEmpty(clothe.Image))
+                    {
+                        clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                    }
+                    else
+                    {
+                        clothe.ImageSource = GetDefaultImage();
+                    }
+                }
+
                 listaArticulosVendedor.ItemsSource = Clothes;
             }
 
+        }
+
+        private async Task<BitmapImage> LoadImageFromUrlAsync(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada si la URL es nula o vacía
+            }
+
+            try
+            {
+                var bitmap = new BitmapImage();
+                using (var webClient = new System.Net.WebClient())
+                {
+                    var imageData = await webClient.DownloadDataTaskAsync(new Uri(url));
+                    using (var stream = new MemoryStream(imageData))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                    }
+                }
+                return bitmap;
+            }
+            catch (Exception)
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada en caso de error
+            }
+        }
+
+        private BitmapImage GetDefaultImage()
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/ClotheIcon.png"));
         }
 
         private void MouseDoubleClick(object sender, MouseButtonEventArgs e)

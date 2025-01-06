@@ -97,7 +97,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Imagen del artículo -->
-                                <Image Grid.Column="0" Source="/Resources/Images/ClotheIcon.png" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
+                                <Image Grid.Column="0" Source="{Binding ImageSource}" Width="80" Height="80" VerticalAlignment="Center" Margin="5" />
 
                                 <!-- Detalles del artículo -->
                                 <Grid Grid.Column="1" HorizontalAlignment="Stretch">
