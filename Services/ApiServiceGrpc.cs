@@ -1,5 +1,7 @@
 ﻿using GOLF_DESKTOP.Model.Entities;
 using GOLF_DESKTOP.Model.Utilities;
+using GOLF_DESKTOP.Views.Pages;
+using GOLF_DESKTOP.Views.Windows;
 using Grpc.Core;
 using Grpc.Net.Client;
 using System;
@@ -82,10 +84,15 @@ namespace GOLF_DESKTOP.Services
                 if (ex.StatusCode == StatusCode.Internal)
                 {
                     MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var login = new Login();
+                        login.Show();
+                    });
                 }
                 else
                 {
-                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -123,7 +130,7 @@ namespace GOLF_DESKTOP.Services
                 }
                 else
                 {
-                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 return false;
             }
@@ -168,7 +175,7 @@ namespace GOLF_DESKTOP.Services
                 }
                 else
                 {
-                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -215,7 +222,7 @@ namespace GOLF_DESKTOP.Services
                 }
                 else
                 {
-                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -262,7 +269,7 @@ namespace GOLF_DESKTOP.Services
                 }
                 else
                 {
-                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -447,7 +454,7 @@ namespace GOLF_DESKTOP.Services
                 }
                 else
                 {
-                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
