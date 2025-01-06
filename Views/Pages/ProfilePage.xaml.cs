@@ -101,7 +101,7 @@ namespace GOLF_DESKTOP.Views.Pages {
         }
 
         private BitmapImage GetDefaultImage() {
-            return new BitmapImage(new Uri("pack://application:,,,/Images/default_profile.png"));
+            return new BitmapImage(new Uri("../Images/default_profile.png"));
         }
 
 
