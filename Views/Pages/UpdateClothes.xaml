@@ -69,6 +69,7 @@
          FontSize="20"
          Margin="266,236,314,174"
          Padding="5"
+        MaxLength="3"                
          TextChanged="CuadroTextoNumero_TextChanged"/>
 
             <Label 
@@ -123,6 +124,7 @@
          FontSize="20"
          Margin="266,329,308,81"
          Padding="5"
+        MaxLength="2"                
          TextChanged="CuadroTextoNumero_TextChanged"/>
 
             <Image x:Name="ClotheImage"
