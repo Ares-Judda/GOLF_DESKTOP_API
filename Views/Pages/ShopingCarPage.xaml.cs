@@ -7,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 namespace GOLF_DESKTOP.Views.Pages {
@@ -54,11 +56,58 @@ namespace GOLF_DESKTOP.Views.Pages {
                 rtglTotal.Visibility = Visibility.Visible;
                 txbBuy.Visibility = Visibility.Visible;
                 Clothes = new ObservableCollection<Clothe>(articles);
+
+                foreach (var clothe in Clothes)
+                {
+                    if (!string.IsNullOrEmpty(clothe.Image))
+                    {
+                        clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                    }
+                    else
+                    {
+                        clothe.ImageSource = GetDefaultImage();
+                    }
+                }
+
                 listaArticulos.ItemsSource = Clothes;
                 CalculatePago();
             } else {
                 MessageBox.Show("No hay artículos en el carrito.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private async Task<BitmapImage> LoadImageFromUrlAsync(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada si la URL es nula o vacía
+            }
+
+            try
+            {
+                var bitmap = new BitmapImage();
+                using (var webClient = new System.Net.WebClient())
+                {
+                    var imageData = await webClient.DownloadDataTaskAsync(new Uri(url));
+                    using (var stream = new MemoryStream(imageData))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                    }
+                }
+                return bitmap;
+            }
+            catch (Exception)
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada en caso de error
+            }
+        }
+
+        private BitmapImage GetDefaultImage()
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/ClotheIcon.png"));
         }
 
         private void CalculatePago() {
