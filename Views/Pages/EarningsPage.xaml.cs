@@ -4,6 +4,7 @@ using GOLF_DESKTOP.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,6 +79,18 @@ namespace GOLF_DESKTOP.Views.Pages {
 
             if (Sales.Any())
             {
+                foreach (var sale in Sales)
+                {
+                    if (!string.IsNullOrEmpty(sale.Image))
+                    {
+                        sale.ImageSource = await LoadImageFromUrlAsync(sale.Image);
+                    }
+                    else
+                    {
+                        sale.ImageSource = GetDefaultImage();
+                    }
+                }
+
                 listaArticulosVendidos.ItemsSource = Sales;
                 CalculateEarnings();
                 CalculateSales();
@@ -89,6 +102,40 @@ namespace GOLF_DESKTOP.Views.Pages {
                 txtVentas.Text = "0";
             }
 
+        }
+
+        private async Task<BitmapImage> LoadImageFromUrlAsync(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada si la URL es nula o vacía
+            }
+
+            try
+            {
+                var bitmap = new BitmapImage();
+                using (var webClient = new System.Net.WebClient())
+                {
+                    var imageData = await webClient.DownloadDataTaskAsync(new Uri(url));
+                    using (var stream = new MemoryStream(imageData))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                    }
+                }
+                return bitmap;
+            }
+            catch (Exception)
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada en caso de error
+            }
+        }
+
+        private BitmapImage GetDefaultImage()
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/ClotheIcon.png"));
         }
 
         private void CalculateEarnings()

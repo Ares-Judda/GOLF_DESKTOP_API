@@ -1,4 +1,5 @@
-﻿using GOLF_DESKTOP.Model.Utilities;
+﻿using GOLF_DESKTOP.Model.Entities;
+using GOLF_DESKTOP.Model.Utilities;
 using GOLF_DESKTOP.Services;
 using Microsoft.Win32;
 using System;
@@ -26,7 +27,7 @@ namespace GOLF_DESKTOP.Views.Pages {
             InitializeComponent();
         }
 
-        private void ClickPublish(object sender, RoutedEventArgs e) {
+        private async void ClickPublish(object sender, RoutedEventArgs e) {
             string name = txtNombre.Text.Trim();
             string priceTxt = txtPrecio.Text.Trim();
             string quotaTxt = txtCantidad.Text.Trim();
@@ -35,14 +36,34 @@ namespace GOLF_DESKTOP.Views.Pages {
             ComboBoxItem selectedItemArt = cbxTipoArticulo.SelectedItem as ComboBoxItem;
             string clotheCategory = selectedItemArt?.Content.ToString();
 
-            if(name != null && priceTxt != null && quotaTxt != null && size != null && clotheCategory != null)
+            if(name != null && priceTxt != null && quotaTxt != null && size != null && clotheCategory != null && ClotheImage.Source is BitmapImage bitmapImage &&
+                bitmapImage.UriSource != null &&
+                bitmapImage.UriSource.OriginalString != "/Resources/Images/ClotheIcon.png")
             {
                 int quota, price;
                 int.TryParse(quotaTxt, out quota);
                 int.TryParse(priceTxt, out price);
-                string idSelling = UserSingleton.GetInstance().IdUser;
+                string imageUrl, idSelling = UserSingleton.GetInstance().IdUser;
 
-                SaveArticle(name, clotheCategory, price, size, quota, idSelling);
+                var profileImageBytes = ImageHandler.ConvertImageToBytes((BitmapImage)ClotheImage.Source);
+                if (profileImageBytes != null)
+                {
+                    imageUrl = await ApiServiceRest.UploadImageAsync(profileImageBytes);
+                    if (string.IsNullOrEmpty(imageUrl))
+                    {
+                        MessageBox.Show("No se pudo subir la imagen. Intenta nuevamente.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    else
+                    {
+                        SaveArticle(name, clotheCategory, price, size, quota, idSelling, imageUrl);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Faltan datos necesarios.",
+                                   "Datos faltantes", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
 
             }
             else
@@ -53,16 +74,16 @@ namespace GOLF_DESKTOP.Views.Pages {
 
         }
 
-        private async void SaveArticle(string name, string clotheCategory, int price, string size, int quota, string idSelling)
+        private async void SaveArticle(string name, string clotheCategory, int price, string size, int quota, string idSelling, string image)
         {
 
 
-            bool results = await ArticulosServiceGrpc.SaveArticuloAsync(name, clotheCategory, price, size, quota, idSelling);
+            bool results = await ArticulosServiceGrpc.SaveArticuloAsync(name, clotheCategory, price, size, quota, idSelling, image);
 
             if (results)
             {
                 MessageBox.Show("Artículo guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                NavigationService.Navigate(new HomePage());
+                NavigationService.Navigate(new ClothesPage());
             }
             else
             {

@@ -60,6 +60,7 @@ namespace GOLF_DESKTOP.Views.Pages {
             string name = txtNombre.Text.Trim();
             string precioTexto = txtPrecio.Text.Trim();
             string quotaTxt = txtCantidad.Text.Trim();
+            string results, imageUrl;
             ComboBoxItem selectedItem = cbxTalla.SelectedItem as ComboBoxItem;
             string size = selectedItem?.Content.ToString();
             ComboBoxItem selectedItemArt = cbxTipoArticulo.SelectedItem as ComboBoxItem;
@@ -69,33 +70,63 @@ namespace GOLF_DESKTOP.Views.Pages {
                 !string.IsNullOrEmpty(precioTexto) &&
                 !string.IsNullOrEmpty(quotaTxt) &&
                 !string.IsNullOrEmpty(size) &&
-                !string.IsNullOrEmpty(clotheCategory))
+                !string.IsNullOrEmpty(clotheCategory) &&
+                ClotheImage.Source != null ||
+                ClotheImage.Source is BitmapImage bitmapImage &&
+                bitmapImage.UriSource != null &&
+                bitmapImage.UriSource.OriginalString != "/Resources/Images/ClotheIcon.png")
             {
                 int.TryParse(precioTexto, out int price);
                 int.TryParse(quotaTxt, out int quota);
-                
-                var actualizaciones = new Dictionary<string, object>
-                {
-                    { "name", name },
-                    { "price", price },
-                    { "quota", quota },
-                    { "size", size },
-                    { "clothecategory", clotheCategory }
-                };
 
                 try
                 {
-                    string results = await ArticulosServiceGrpc.UpdateArticuloAsync(articleToUpdate.ID_Clothes, actualizaciones);
-
-                    if(results != null)
+                    var profileImageBytes = ImageHandler.ConvertImageToBytes((BitmapImage)ClotheImage.Source);
+                    if (profileImageBytes != null)
                     {
-                        MessageBox.Show("Articulo actualizado correctamente", "Resultado de la Actualización", MessageBoxButton.OK, MessageBoxImage.Information);
+                        imageUrl = await ApiServiceRest.UploadImageAsync(profileImageBytes);
+                        if (string.IsNullOrEmpty(imageUrl))
+                        {
+                            MessageBox.Show("No se pudo subir la imagen. Intenta nuevamente.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        else
+                        {
+                            var actualizaciones = new Dictionary<string, object>
+                            {
+                                { "name", name },
+                                { "price", price },
+                                { "quota", quota },
+                                { "size", size },
+                                { "clothecategory", clotheCategory },
+                                { "pick", imageUrl },
+                            };
+
+                            results = await ArticulosServiceGrpc.UpdateArticuloAsync(articleToUpdate.ID_Clothes, actualizaciones);
+
+                            if (results != null)
+                            {
+                                MessageBox.Show("Articulo actualizado correctamente", "Resultado de la Actualización", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                                if (!string.IsNullOrEmpty(articleToUpdate.Image))
+                                {
+                                    bool isDeleted = await ApiServiceRest.DeleteImageAsync(System.IO.Path.GetFileName(articleToUpdate.Image));
+                                    if (!isDeleted)
+                                    {
+                                        MessageBox.Show("No se pudo eliminar la imagen anterior.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se pudo actualizar el articulo", "Error al actualizar", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo actualizar el articulo", "Error al actualizar", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Faltan datos necesarios.", "Datos faltantes", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -114,13 +145,25 @@ namespace GOLF_DESKTOP.Views.Pages {
             NavigationService.GoBack();
         }
 
-        private async void ClickDelete(object sender, RoutedEventArgs e) {
+        private async void ClickDelete(object sender, RoutedEventArgs e)
+        {
             bool resultado = await ArticulosServiceGrpc.DeleteArticuloAsync(articleToUpdate.ID_Clothes);
 
             if (resultado)
             {
+                if (!string.IsNullOrEmpty(articleToUpdate.Image))
+                {
+                    MessageBox.Show("Imagen: " + articleToUpdate.Image);
+                    bool imageDeleted = await ApiServiceRest.DeleteImageAsync(System.IO.Path.GetFileName(articleToUpdate.Image));
+                    if (!imageDeleted)
+                    {
+                        MessageBox.Show("Artículo eliminado, pero no se pudo eliminar la imagen asociada.",
+                                        "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+
                 MessageBox.Show("Artículo eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                NavigationService.Navigate(new HomePage());
+                NavigationService.Navigate(new ClothesPage());
             }
             else
             {
@@ -133,6 +176,7 @@ namespace GOLF_DESKTOP.Views.Pages {
             txtNombre.Text = article.Name;
             txtCantidad.Text = article.Quota.ToString();
             txtPrecio.Text = article.Price.ToString();
+            ClotheImage.Source = article.ImageSource;
 
             foreach (ComboBoxItem item in cbxTipoArticulo.Items)
             {

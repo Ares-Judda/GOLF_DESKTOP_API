@@ -130,7 +130,6 @@
             Height="182"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Source="/Resources/Images/ClotheIcon.png"
             MouseDown="ClickClotheImage"
             Cursor="Hand" 
             Margin="53,175,0,0" 

@@ -72,7 +72,8 @@ namespace GOLF_DESKTOP.Services
                         ClotheCategory = articulo.Clothecategory,
                         Price = articulo.Price,
                         Quota = articulo.Quota,
-                        Size = articulo.Size
+                        Size = articulo.Size,
+                        Image = articulo.Image
                     });
                 }
             }
@@ -91,7 +92,7 @@ namespace GOLF_DESKTOP.Services
             return articles;
         }
 
-        public static async Task<bool> SaveArticuloAsync(string name, string clotheCategory, int price, string size, int quota, string idSelling)
+        public static async Task<bool> SaveArticuloAsync(string name, string clotheCategory, int price, string size, int quota, string idSelling, string image)
         {
             try
             {
@@ -102,7 +103,8 @@ namespace GOLF_DESKTOP.Services
                     Price = price,
                     Size = size,
                     Quota = quota,
-                    IDSelling = idSelling
+                    IDSelling = idSelling,
+                    Image = image
                 };
 
                 var response = await Client.SaveArticuloAsync(request);
@@ -149,7 +151,102 @@ namespace GOLF_DESKTOP.Services
                         ClotheCategory = articulo.Clothecategory,
                         Price = articulo.Price,
                         Quota = articulo.Quota,
-                        Size = articulo.Size
+                        Size = articulo.Size,
+                        Image = articulo.Image
+                    });
+                }
+            }
+            catch (RpcException ex)
+            {
+                if (ex.StatusCode == StatusCode.InvalidArgument)
+                {
+                    MessageBox.Show("El ID del vendedor no fue proporcionado.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else if (ex.StatusCode == StatusCode.Internal)
+                {
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return articles;
+        }
+
+        public static async Task<List<Clothe>> GetArticulosBySellingAndNameAsync(string idSelling, string name)
+        {
+            var articles = new List<Clothe>();
+
+            try
+            {
+                var request = new GetArticuloBySellingAndNameRequest
+                {
+                    IDSelling = idSelling,
+                    Name = name
+                };
+
+                var response = await Client.GetArticulosBySellingAndNameAsync(request);
+
+                foreach (var articulo in response.Articulos)
+                {
+                    articles.Add(new Clothe
+                    {
+                        ID_Clothes = articulo.IDClothes,
+                        Name = articulo.Name,
+                        ClotheCategory = articulo.Clothecategory,
+                        Price = articulo.Price,
+                        Quota = articulo.Quota,
+                        Size = articulo.Size,
+                        Image = articulo.Image
+                    });
+                }
+            }
+            catch (RpcException ex)
+            {
+                if (ex.StatusCode == StatusCode.InvalidArgument)
+                {
+                    MessageBox.Show("El ID del vendedor no fue proporcionado.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else if (ex.StatusCode == StatusCode.Internal)
+                {
+                    MessageBox.Show("Error al obtener los artículos desde el servidor. Verifique la conexión.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return articles;
+        }
+
+        public static async Task<List<Clothe>> GetArticulosBySellingAndCategoryAsync(string idSelling, string clothecategory)
+        {
+            var articles = new List<Clothe>();
+
+            try
+            {
+                var request = new GetArticuloBySellingAndCategoryRequest
+                {
+                    IDSelling = idSelling,
+                    Clothecategory = clothecategory
+                };
+
+                var response = await Client.GetArticulosBySellingAndCategoryAsync(request);
+
+                foreach (var articulo in response.Articulos)
+                {
+                    articles.Add(new Clothe
+                    {
+                        ID_Clothes = articulo.IDClothes,
+                        Name = articulo.Name,
+                        ClotheCategory = articulo.Clothecategory,
+                        Price = articulo.Price,
+                        Quota = articulo.Quota,
+                        Size = articulo.Size,
+                        Image = articulo.Image
                     });
                 }
             }
@@ -268,7 +365,8 @@ namespace GOLF_DESKTOP.Services
                     Price = a.Price,
                     Quota = a.Quota,
                     Size = a.Size,
-                    ClotheCategory = a.Clothecategory
+                    ClotheCategory = a.Clothecategory,
+                    Image = a.Image
                 }).ToList();
             }
             catch (RpcException ex)
@@ -291,7 +389,8 @@ namespace GOLF_DESKTOP.Services
                     Price = a.Price,
                     Quota = a.Quota,
                     Size = a.Size,
-                    ClotheCategory = a.Clothecategory
+                    ClotheCategory = a.Clothecategory,
+                    Image = a.Image
                 }).ToList();
             }
             catch (RpcException ex)
@@ -336,6 +435,7 @@ namespace GOLF_DESKTOP.Services
                         NameArticle = sale.Name,
                         PriceArticle = sale.PriceArticle,
                         Selling = sale.NameSelling,
+                        Image = sale.Image,
                     });
                 }
             }

@@ -4,6 +4,7 @@ using GOLF_DESKTOP.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,10 +47,23 @@ namespace GOLF_DESKTOP.Views.Pages {
                 }
 
                 var articles = await ArticulosServiceGrpc.GetArticleByNameAsync(articleName);
+                Clothes = new ObservableCollection<Clothe>(articles);
 
-                if (articles.Any())
+                if (Clothes.Any())
                 {
-                    listaArticulos.ItemsSource = articles; 
+                    foreach (var clothe in Clothes)
+                    {
+                        if (!string.IsNullOrEmpty(clothe.Image))
+                        {
+                            clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                        }
+                        else
+                        {
+                            clothe.ImageSource = GetDefaultImage();
+                        }
+                    }
+
+                    listaArticulos.ItemsSource = Clothes; 
                 }
                 else
                 {
@@ -71,10 +85,23 @@ namespace GOLF_DESKTOP.Views.Pages {
                 string category = selectedItem?.Content.ToString();
 
                 var articles = await ArticulosServiceGrpc.GetArticleByCategoryAsync(category);
+                Clothes = new ObservableCollection<Clothe>(articles);
 
-                if (articles.Any())
+                if (Clothes.Any())
                 {
-                    listaArticulos.ItemsSource = articles;
+                    foreach (var clothe in Clothes)
+                    {
+                        if (!string.IsNullOrEmpty(clothe.Image)) 
+                        {
+                            clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                        }
+                        else
+                        {
+                            clothe.ImageSource = GetDefaultImage();
+                        }
+                    }
+
+                    listaArticulos.ItemsSource = Clothes;
                 }
                 else
                 {
@@ -90,15 +117,67 @@ namespace GOLF_DESKTOP.Views.Pages {
 
         private async void getArticles()
         {
-            var articles = await ArticulosServiceGrpc.GetAllArticulosAsync();
-
-            Clothes = new ObservableCollection<Clothe>(articles);
-
-            if (Clothes.Any())
+            try
             {
-                listaArticulos.ItemsSource = Clothes;
+                var articles = await ArticulosServiceGrpc.GetAllArticulosAsync();
+
+                Clothes = new ObservableCollection<Clothe>(articles);
+
+                if (Clothes.Any())
+                {
+                    foreach (var clothe in Clothes)
+                    {
+                        if (!string.IsNullOrEmpty(clothe.Image)) 
+                        {
+                            clothe.ImageSource = await LoadImageFromUrlAsync(clothe.Image);
+                        }
+                        else
+                        {
+                            clothe.ImageSource = GetDefaultImage(); 
+                        }
+                    }
+
+                    listaArticulos.ItemsSource = Clothes;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener los artículos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task<BitmapImage> LoadImageFromUrlAsync(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada si la URL es nula o vacía
             }
 
+            try
+            {
+                var bitmap = new BitmapImage();
+                using (var webClient = new System.Net.WebClient())
+                {
+                    var imageData = await webClient.DownloadDataTaskAsync(new Uri(url));
+                    using (var stream = new MemoryStream(imageData))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                    }
+                }
+                return bitmap;
+            }
+            catch (Exception)
+            {
+                return GetDefaultImage(); // Usar imagen predeterminada en caso de error
+            }
+        }
+
+        private BitmapImage GetDefaultImage()
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/ClotheIcon.png"));
         }
 
         private void MouseDoubleClick(object sender, MouseButtonEventArgs e)

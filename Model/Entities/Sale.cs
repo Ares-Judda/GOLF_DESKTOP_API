@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace GOLF_DESKTOP.Model.Entities
 {
@@ -17,5 +18,7 @@ namespace GOLF_DESKTOP.Model.Entities
         public string? NameArticle { get; set; }
         public int PriceArticle { get; set; }
         public string? Selling {  get; set; }
+        public string? Image { get; set; }
+        public BitmapImage ImageSource { get; set; }
     }
 }
